@@ -1,4 +1,4 @@
-name: 'local-cache'
+name: 'jmheretik-local-cache'
 description: "A Github Action to save and restore files across job runs directly in the runner's file system"
 inputs:
   key:

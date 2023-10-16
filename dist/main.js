@@ -2867,7 +2867,7 @@ var import_io_util = __toESM(require_io_util());
 
 // src/lib/getVars.ts
 var core = __toESM(require_core());
-var { GITHUB_REPOSITORY, RUNNER_TOOL_CACHE, CUSTOM_RUNNER_TOOL_CACHE } = process.env;
+var { GITHUB_REPOSITORY, RUNNER_TOOL_CACHE, CUSTOM_DIR } = process.env;
 var CWD = process.cwd();
 var getVars = () => {
   if (!RUNNER_TOOL_CACHE) {
@@ -2883,7 +2883,7 @@ var getVars = () => {
   if (!options.path) {
     throw new TypeError("path is required but was not provided.");
   }
-  const cacheDir = path__default.default.join(CUSTOM_RUNNER_TOOL_CACHE ?? RUNNER_TOOL_CACHE, GITHUB_REPOSITORY, options.key);
+  const cacheDir = CUSTOM_DIR ?? path__default.default.join(RUNNER_TOOL_CACHE, GITHUB_REPOSITORY, options.key);
   const cachePath = path__default.default.join(cacheDir, options.path);
   const targetPath = path__default.default.resolve(CWD, options.path);
   const { dir: targetDir } = path__default.default.parse(targetPath);

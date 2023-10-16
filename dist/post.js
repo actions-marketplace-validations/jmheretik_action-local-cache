@@ -2921,7 +2921,7 @@ async function post() {
   try {
     const { cacheDir, targetPath, cachePath } = getVars();
     await (0, import_io.mkdirP)(cacheDir);
-    await (0, import_io.mv)(targetPath, cachePath, { force: true });
+    await (0, import_io.cp)(targetPath, cachePath, { force: true });
   } catch (error) {
     log_default.trace(error);
     (0, import_core.setFailed)(isErrorLike(error) ? error.message : `unknown error: ${error}`);

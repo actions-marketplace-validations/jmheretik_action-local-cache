@@ -2867,7 +2867,7 @@ var import_io_util = __toESM(require_io_util());
 
 // src/lib/getVars.ts
 var core = __toESM(require_core());
-var { GITHUB_REPOSITORY, RUNNER_TOOL_CACHE, CUSTOM_RUNNER_TOOL_CACHE } = process.env;
+var { GITHUB_REPOSITORY, RUNNER_TOOL_CACHE } = process.env;
 var CWD = process.cwd();
 var getVars = () => {
   if (!RUNNER_TOOL_CACHE) {
@@ -2878,12 +2878,13 @@ var getVars = () => {
   }
   const options = {
     key: core.getInput("key") || "no-key",
-    path: core.getInput("path")
+    path: core.getInput("path"),
+    dir: core.getInput("dir")
   };
   if (!options.path) {
     throw new TypeError("path is required but was not provided.");
   }
-  const cacheDir = path__default.default.join(CUSTOM_RUNNER_TOOL_CACHE ?? RUNNER_TOOL_CACHE, GITHUB_REPOSITORY, options.key);
+  const cacheDir = options.dir ? path__default.default.join(options.dir, options.key) : path__default.default.join(RUNNER_TOOL_CACHE, GITHUB_REPOSITORY, options.key);
   const cachePath = path__default.default.join(cacheDir, options.path);
   const targetPath = path__default.default.resolve(CWD, options.path);
   const { dir: targetDir } = path__default.default.parse(targetPath);
@@ -2922,7 +2923,7 @@ async function main() {
     const { cachePath, targetDir, targetPath, options } = getVars();
     if (await (0, import_io_util.exists)(cachePath)) {
       await (0, import_io.mkdirP)(targetDir);
-      await (0, import_io.mv)(cachePath, targetPath, { force: true });
+      await (0, import_io.cp)(cachePath, targetPath, { force: true, recursive: true });
       log_default.info(`Cache found and restored to ${options.path}`);
       (0, import_core.setOutput)("cache-hit", true);
     } else {
